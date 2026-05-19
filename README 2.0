@@ -1,0 +1,231 @@
+Hardware Components Used
+
+The hardware setup of this project is designed using IoT and embedded system components for controlling smart traffic signals.
+
+Components List
+Component	Purpose
+ESP32 Development Board	Main IoT controller
+Breadboard	Circuit connections
+4-Channel Relay Module	Signal switching control
+LED Lights	Traffic signal indicators
+Resistors (220Ω)	LED protection
+Jumper Wires	Hardware connections
+USB Cable	Power and programming
+Laptop/PC	Programming and monitoring
+WiFi Network	Communication between system devices
+Hardware Overview
+
+The ESP32 microcontroller is the brain of the hardware system. It connects with the laptop using WiFi and controls the LEDs and relay module based on traffic conditions. The LEDs simulate traffic lights such as Red, Yellow, and Green signals. The relay module is used for automated switching operations. The breadboard helps connect all electronic components safely.
+
+Step-by-Step Hardware Setup
+Step 1: Prepare the Breadboard
+Place the breadboard on a flat surface.
+Ensure enough space for LEDs and jumper wire connections.
+Identify:
+Positive rail (+)
+Ground rail (-)
+Step 2: Connect ESP32 to Breadboard
+ESP32 Power Connections
+ESP32 Pin	Breadboard
+3.3V / 5V	Positive Rail
+GND	Ground Rail
+Process
+Connect ESP32 3.3V pin to breadboard positive rail.
+Connect ESP32 GND pin to breadboard ground rail.
+This provides power supply to connected components.
+Step 3: Connect Traffic Signal LEDs
+
+The LEDs represent traffic signals.
+
+LED Color Functions
+LED Color	Purpose
+Red LED	Stop Signal
+Yellow LED	Wait Signal
+Green LED	Go Signal
+Step 4: LED Circuit Connection
+
+Each LED must be connected with a resistor to avoid damage.
+
+Connection Method
+Green LED
+LED Pin	ESP32 Connection
+Anode (+)	GPIO 23
+Cathode (-)	GND through resistor
+Yellow LED
+LED Pin	ESP32 Connection
+Anode (+)	GPIO 22
+Cathode (-)	GND through resistor
+Red LED
+LED Pin	ESP32 Connection
+Anode (+)	GPIO 21
+Cathode (-)	GND through resistor
+Step 5: Connect Relay Module
+
+The relay module controls automated switching.
+
+Relay Connections
+Relay Module Pin	ESP32 Pin
+VCC	5V
+GND	GND
+IN1	GPIO 18
+IN2	GPIO 19
+IN3	GPIO 5
+IN4	GPIO 17
+Step 6: Connect ESP32 to Laptop
+Use USB cable
+Connect ESP32 to laptop
+ESP32 receives power and program upload access
+Step 7: Connect ESP32 and Laptop to Same WiFi
+Important
+
+Both:
+
+Laptop
+ESP32
+
+must connect to the same WiFi network.
+
+Example
+Device	WiFi
+Laptop	SmartCityWiFi
+ESP32	SmartCityWiFi
+
+This allows communication between:
+
+AI software
+IoT hardware
+Traffic control system
+Step 8: Install Arduino IDE
+
+Download:
+Arduino IDE
+
+Step 9: Install ESP32 Board Package
+In Arduino IDE
+Open:
+File → Preferences
+
+Add Board URL:
+
+https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+Then:
+Tools → Board Manager
+
+Search:
+
+ESP32
+
+Install ESP32 package.
+
+Step 10: Select Board and COM Port
+In Arduino IDE
+Select:
+Tools → Board → ESP32 Dev Module
+Select COM Port:
+Tools → Port
+
+Choose correct connected port.
+
+Step 11: Upload Code to ESP32
+Open Arduino code
+Click Upload button
+Wait for upload completion
+Step 12: Open Serial Monitor
+
+Open:
+
+Tools → Serial Monitor
+
+Set baud rate:
+
+115200
+
+This shows:
+
+WiFi connection status
+IP address
+Traffic signal data
+System Working Process
+ESP32 powers the hardware system.
+AI/software analyzes traffic conditions.
+ESP32 receives control signals.
+LEDs simulate traffic signals.
+Relay module controls switching operations.
+Signal timings change automatically based on traffic density.
+Smart traffic flow management is achieved.
+Hardware Features
+IoT-based smart traffic control
+ESP32 wireless communication
+LED traffic signal simulation
+Relay automation system
+Real-time monitoring
+Smart city implementation
+Low-cost hardware model
+Important Note
+
+Large files such as:
+
+datasets
+trained AI models
+labeled data
+videos
+virtual environment (venv)
+
+are not uploaded due to GitHub file size limitations.
+
+Users must manually add these files before running the project.
+
+Sample ESP32 Arduino WiFi Code.
+
+
+#include <WiFi.h>
+
+const char* ssid = "YOUR_WIFI_NAME";
+const char* password = "YOUR_WIFI_PASSWORD";
+
+#define RED_LED 21
+#define YELLOW_LED 22
+#define GREEN_LED 23
+
+void setup() {
+
+  Serial.begin(115200);
+
+  pinMode(RED_LED, OUTPUT);
+  pinMode(YELLOW_LED, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
+
+  WiFi.begin(ssid, password);
+
+  Serial.println("Connecting to WiFi...");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting...");
+  }
+
+  Serial.println("WiFi Connected");
+  Serial.print("ESP32 IP Address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void loop() {
+
+  // Green Signal
+  digitalWrite(GREEN_LED, HIGH);
+  digitalWrite(YELLOW_LED, LOW);
+  digitalWrite(RED_LED, LOW);
+  delay(5000);
+
+  // Yellow Signal
+  digitalWrite(GREEN_LED, LOW);
+  digitalWrite(YELLOW_LED, HIGH);
+  digitalWrite(RED_LED, LOW);
+  delay(2000);
+
+  // Red Signal
+  digitalWrite(GREEN_LED, LOW);
+  digitalWrite(YELLOW_LED, LOW);
+  digitalWrite(RED_LED, HIGH);
+  delay(5000);
+}
